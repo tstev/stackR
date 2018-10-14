@@ -1,23 +1,21 @@
-reprex::reprex({library(stringr)
+library(stringr)
 
-  txt <- c("a ~ b c d*e !r x",
-           "a ~ b c",
-           "a ~ b c d1 !r y",
-           "a ~ b c D !r z",
-           "a~b c d*e!r z")
+txt <- c("a ~ b c d*e !r x",
+         "a ~ b c",
+         "a ~ b c d1 !r y",
+         "a ~ b c D !r z",
+         "a~b c d*e!r z")
 
 # Different tries with capture groups
-str_replace(txt, "^.*~ (.*) !r.*$", "\\1")
-str_replace(txt, "^(.*~ )(.*)( !r.*)$", "\\2")
-str_replace(txt, "^(.*~)(.*)(!r.*|\n)$", "\\1\\2")
-str_replace(txt, "^(.*) ~ (.*)!r.*($)", "\\2")
-str_replace(txt, "^.* ~ (.*)(!r.*|\n)$", "\\1")
-
+str_replace_all(txt, "^.*~ (.*) !r.*$", "\\1")
+str_replace_all(txt, "^(.*~ )(.*)( !r.*)$", "\\2")
+str_replace_all(txt, "^(.*~)(.*)(!r.*|\n)$", "\\1\\2")
+str_replace_all(txt, "^(.*) ~ (.*)!r.*($)", "\\2")
+str_replace_all(txt, "^.* ~ (.*)(!r.*|\n)$", "\\1")
 
 # Multiple steps
-step1 <- str_replace(txt, "^.*~\\s*", "")
-step2 <- str_replace(step1, "\\s*!r.*$", "")
-step2}, venue = "so")
+step1 <- str_replace_all(txt, "^.*~\\s*", "")
+step2 <- str_replace_all(step1, "\\s*!r.*$", "")
 
 # My (probably non-robust) solution/monstrosity
 str_replace(txt, "(^.*~\\s*(.*)\\s*!r.*$|^.*~\\s*(.*)$)", "\\2\\3")
